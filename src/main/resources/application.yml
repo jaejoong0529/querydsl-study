@@ -22,6 +22,16 @@ spring:
         use_sql_comments: true
         dialect: org.hibernate.dialect.MySQLDialect
 
+# P6Spy 설정
+decorator:
+  datasource:
+    p6spy:
+      enable-logging: true
+      multiline: true
+      logging: slf4j
+
+# 로깅 레벨 설정
 logging:
   level:
-    org.hibernate.orm.jdbc.bind: trace
+    p6spy: info
+    com.querydslstudy.repository: debug
