@@ -5,7 +5,7 @@ JPA만으로 해결하기 어려운 복잡한 쿼리를 QueryDSL로 어떻게 �
 
 ## 주요 특징
 
-*Custom Repository 구조: JpaRepository와 QueryDSL 구현체를 함께 사용하는 표준 패턴 적용
+Custom Repository 구조: JpaRepository와 QueryDSL 구현체를 함께 사용하는 표준 패턴 적용
 
 * Entity 설계: 정적 팩토리 메서드(of)와 private 생성자를 통해 불변성 및 객체 생성 제약 강화
 
