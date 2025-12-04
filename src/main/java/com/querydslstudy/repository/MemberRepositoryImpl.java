@@ -27,7 +27,7 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
 
     @Override
     public List<MemberTeamResponse> searchByCondition(MemberSearchRequest request) {
-        log.debug("🔍 [QueryDSL] searchByCondition 호출 - 조건: username={}, ageGoe={}, ageLoe={}, teamName={}, status={}",
+        log.debug(" [QueryDSL] searchByCondition 호출 - 조건: username={}, ageGoe={}, ageLoe={}, teamName={}, status={}",
                 request.username(), request.ageGoe(), request.ageLoe(), request.teamName(), request.status());
         
         List<MemberTeamResponse> result = queryFactory
@@ -43,25 +43,25 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
                 .where(buildCondition(request))
                 .fetch();
         
-        log.debug("✅ [QueryDSL] searchByCondition 완료 - 조회된 결과 수: {}", result.size());
+        log.debug(" [QueryDSL] searchByCondition 완료 - 조회된 결과 수: {}", result.size());
         return result;
     }
 
     @Override
     public List<Member> findMembersWithTeam() {
-        log.debug("🔍 [QueryDSL] findMembersWithTeam 호출 - Team과 조인");
+        log.debug(" [QueryDSL] findMembersWithTeam 호출 - Team과 조인");
         List<Member> result = queryFactory
                 .selectFrom(member)
                 .join(member.team, team)
                 .fetchJoin()
                 .fetch();
-        log.debug("✅ [QueryDSL] findMembersWithTeam 완료 - 조회된 회원 수: {}", result.size());
+        log.debug(" [QueryDSL] findMembersWithTeam 완료 - 조회된 회원 수: {}", result.size());
         return result;
     }
 
     @Override
     public List<Member> findMembersOlderThanAverage() {
-        log.debug("🔍 [QueryDSL] findMembersOlderThanAverage 호출 - 평균 나이보다 많은 회원 조회 (서브쿼리 사용)");
+        log.debug(" [QueryDSL] findMembersOlderThanAverage 호출 - 평균 나이보다 많은 회원 조회 (서브쿼리 사용)");
         QMember subMember = new QMember("subMember");
         List<Member> result = queryFactory
                 .selectFrom(member)
@@ -71,26 +71,26 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
                                 .from(subMember)
                 ))
                 .fetch();
-        log.debug("✅ [QueryDSL] findMembersOlderThanAverage 완료 - 조회된 회원 수: {}", result.size());
+        log.debug(" [QueryDSL] findMembersOlderThanAverage 완료 - 조회된 회원 수: {}", result.size());
         return result;
     }
 
     @Override
     public List<Member> findMembersWithPaging(int offset, int limit) {
-        log.debug("🔍 [QueryDSL] findMembersWithPaging 호출 - offset: {}, limit: {}", offset, limit);
+        log.debug(" [QueryDSL] findMembersWithPaging 호출 - offset: {}, limit: {}", offset, limit);
         List<Member> result = queryFactory
                 .selectFrom(member)
                 .orderBy(member.id.desc())
                 .offset(offset)
                 .limit(limit)
                 .fetch();
-        log.debug("✅ [QueryDSL] findMembersWithPaging 완료 - 조회된 회원 수: {}", result.size());
+        log.debug(" [QueryDSL] findMembersWithPaging 완료 - 조회된 회원 수: {}", result.size());
         return result;
     }
 
     @Override
     public Page<MemberTeamResponse> searchByConditionWithPaging(MemberSearchRequest request, Pageable pageable) {
-        log.debug("🔍 [QueryDSL] searchByConditionWithPaging 호출 - page: {}, size: {}", 
+        log.debug(" [QueryDSL] searchByConditionWithPaging 호출 - page: {}, size: {}",
                 pageable.getPageNumber(), pageable.getPageSize());
 
         List<MemberTeamResponse> content = queryFactory
@@ -116,7 +116,7 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
                 .where(buildCondition(request))
                 .fetchOne();
 
-        log.debug("✅ [QueryDSL] searchByConditionWithPaging 완료 - 조회된 결과 수: {}, 전체: {}", 
+        log.debug(" [QueryDSL] searchByConditionWithPaging 완료 - 조회된 결과 수: {}, 전체: {}",
                 content.size(), total);
 
         return new PageImpl<>(content, pageable, total != null ? total : 0);
@@ -124,13 +124,13 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
 
     @Override
     public Long countMembersByTeam(Long teamId) {
-        log.debug("🔍 [QueryDSL] countMembersByTeam 호출 - teamId: {} (집계 함수 사용)", teamId);
+        log.debug(" [QueryDSL] countMembersByTeam 호출 - teamId: {} (집계 함수 사용)", teamId);
         Long result = queryFactory
                 .select(member.count())
                 .from(member)
                 .where(member.team.id.eq(teamId))
                 .fetchOne();
-        log.debug("✅ [QueryDSL] countMembersByTeam 완료 - 팀별 회원 수: {}", result);
+        log.debug(" [QueryDSL] countMembersByTeam 완료 - 팀별 회원 수: {}", result);
         return result;
     }
 }
